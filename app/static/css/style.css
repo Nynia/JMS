@@ -1,0 +1,152 @@
+html, body {
+    height: 100%;
+}
+
+.widthfixed {
+    width: 800px;
+}
+
+.form {
+    width: 100%;
+    max-width: 300px;
+    height: 275px;
+    margin: 125px auto 0px auto;
+    padding-top: 25px;
+}
+
+.input-group {
+    margin: 0px 0px 20px 0px !important;
+}
+
+.form-control,
+.input-group {
+    height: 40px;
+}
+
+.form-group {
+    margin-bottom: 0px !important;
+}
+
+.btn-sm {
+    padding: 8px 20px !important;
+    font-size: 14px !important;
+}
+
+.margintop50 {
+    margin-top: 50px;
+}
+
+.first_floor {
+    width: 770px;
+}
+
+.first_floor .left {
+    width: 160px;
+    height: 180px;
+    float: left;
+    margin: 20px 10px;
+    background-image: url('../img/0001.jpg');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.first_floor .right {
+    width: 570px;
+    float: left;
+    margin: 20px 10px;
+    padding-left: 40px;
+}
+
+.second_floor {
+    width: 770px;
+    margin-bottom: 25px;
+}
+
+.third_floor {
+    width: 770px;
+    margin-bottom: 25px;
+}
+
+.fourth_floor {
+    width: 770px;
+    margin-bottom: 25px;
+}
+
+.exp {
+    color: black;
+    font-size: 20px;
+}
+
+.edit {
+    display: block;
+    float: right;
+}
+
+.floor_title {
+    background-color: #cccccc;
+}
+
+.floor_content {
+}
+
+.job-info {
+    padding: 10px;
+    height: 100%;
+    overflow: hidden;
+    border-bottom: 1px solid darkgray;
+}
+
+.job-info .left {
+    float: left;
+    width: 550px;
+    height: 80px;
+
+}
+
+.job-info .right {
+    margin-top: 20px;
+    padding-left: 50px;
+    float: left;
+    width: 200px;
+    height: 80px;
+}
+
+.job-info .btn {
+
+}
+
+.job-info .bottom {
+    float: left;
+    width: 100%
+}
+
+.job-detail {
+    margin-top: 10px;
+    padding: 10px;
+    height: 100%;
+    overflow: hidden;
+}
+
+.job-detail .list-group-item {
+    border: none;
+    padding: 5px 1px;
+}
+label {
+    margin-left:21px;
+}
+.form-control {
+    margin:auto auto;
+    height:35px;
+    width:90%;
+    font-size:1em;
+}
+
+.ui-dialog .ui-state-error {
+    padding: .3em;
+}
+
+.validateTips {
+    border: 1px solid transparent;
+    padding: 0.3em;
+}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block page_content %}
+    <script>
+         document.getElementById('nav1').setAttribute('class', 'active');
+    </script>
+    <div class="container widthfixed">
+        <ul class="list-group">
+            {% for p in positions %}
+                <li class="list-group-item">
+                    <span class="badge">{{p.create_date}}</span>
+                    <a href="jobdetail/{{p.id}}">{{p.company_name}}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

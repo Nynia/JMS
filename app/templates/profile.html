@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block page_content %}
+    <script>
+         document.getElementById('nav3').setAttribute('class', 'active');
+    </script>
+    <div class="container widthfixed">
+        <div class="first_floor">
+            <div class="left">
+            </div>
+            <div class="right">
+                <h2>{{baseinfo.name}}</h2>
+                <span>{{baseinfo.major}}   </span><span>{{baseinfo.school}}</span>
+                <p>{{baseinfo.degree}}</p>
+                <p>{{baseinfo.mail}}</p>
+                <p>{{baseinfo.tel}}</p>
+            </div>
+            <div class="clearfix">
+            </div>
+        </div>
+        <div class="second_floor">
+            <div class="floor_title">
+                <span class="exp">教育经历</span>
+                <a class="edit">编辑</a>
+            </div>
+            <ul class="floor_content">
+                {% for item in exp[0]%}
+                    <li>
+                        <span>{{item.datefrom}} -- {{item.dateto}}</span>
+                        <span>{{item.shcool}}</span>
+                        <span>{{item.major}}</span>
+                        <span>{{item.degree}}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="third_floor">
+            <div class="floor_title">
+                <span class="exp">工作经历</span>
+                <a class="edit">编辑</a>
+            </div>
+            <ul class="floor_content">
+                {% for item in exp[1]%}
+                    <li>
+                        <span>{{item.datefrom}} -- {{item.dateto}}</span>
+                        <span>{{item.company}}</span>
+                        <span>{{item.position}}</span>
+                        <p>{{item.jobdescription}}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    <div class="fourth_floor">
+            <div class="floor_title">
+                <span class="exp">获奖经历</span>
+                <a class="edit">编辑</a>
+            </div>
+            <ul class="floor_content">
+                {% for item in exp[2]%}
+                    <li>
+                        <span>{{item.date}} </span>
+                        <span>{{item.name}} </span>
+                        <span>{{item.rank}}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

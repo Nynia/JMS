@@ -1,0 +1,205 @@
+{% extends "bootstrap/base.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="../static/css/jquery-ui.min.css">
+<link rel="stylesheet" type="text/css" href="../static/css/style.css">
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/jquery-ui.min.js"></script>
+<script>
+    $(function () {
+        var name = $("#name"),
+                sno = $("#sno"),
+                age = $("#age"),
+                sex = $('#sex'),
+                major = $('#major'),
+                degree = $('#degree'),
+                institute = $('#institute'),
+                tips = $(".validateTips");
+
+        function updateTips(t) {
+            tips
+                    .text(t)
+                    .addClass("ui-state-highlight");
+            setTimeout(function () {
+                tips.removeClass("ui-state-highlight", 1500);
+            }, 500);
+        }
+
+        function checkLength(o, n, min, max) {
+            if (o.val().length > max || o.val().length < min) {
+                o.addClass("ui-state-error");
+                updateTips("" + n + " 的长度必须在 " +
+                        min + " 和 " + max + " 之间。");
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function checkRegexp(o, regexp, n) {
+            if (!( regexp.test(o.val()) )) {
+                o.addClass("ui-state-error");
+                updateTips(n);
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        $("#dialog-form").dialog({
+            autoOpen: false,
+            height: 550,
+            width: 420,
+            modal: true,
+            buttons: {
+                "添加一个用户": function () {
+                    var bValid = true;
+                    //allFields.removeClass("ui-state-error");
+                    if (bValid) {
+                        $("#users").append("<tr>" +
+                                "<td>" + sno.val() + "</td>" +
+                                "<td>" + name.val() + "</td>" +
+                                "<td>" + sex.val() + "</td>" +
+                                "<td>" + age.val() + "</td>" +
+                                "<td>" + degree.val() + "</td>" +
+                                "<td>" + major.val() + "</td>" +
+                                "<td>" + institute.val() + "</td>" +
+                                "</tr>");
+                        $.ajax({
+                            type: "GET",
+                            url: "addStu",
+                            data: {
+                                sno: sno.val(), name: name.val(), sex: sex.val(), age: age.val(),
+                                major: major.val(), degree: degree.val(), institute: institute.val()
+                            },
+                            success: function (msg) {
+                                alert("success");
+                            }
+                        });
+                        $(this).dialog("close");
+                        $('#sno').val("");
+                        $('#name').val("");
+                        $('#age').val("");
+                        $('#major').val("");
+                        $('#degree').val("");
+                        $('#institute').val("");
+                    }
+                },
+                Cancel: function () {
+                    $(this).dialog("close");
+                }
+            },
+            close: function () {
+            }
+        });
+
+        $("#create-user")
+                .button()
+                .click(function () {
+                    $("#dialog-form").dialog("open");
+
+                });
+    });
+</script>
+{% endblock %}
+
+{% block title %}student{% endblock %}
+{% block navbar %}
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container widthfixed">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">毕业生就业管理系统</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li id="nav1"><a href="adminSM">学生管理</a></li>
+                <li id="nav2"><a href="adminCM">企业管理</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="3">Admin</a></li>
+                <li class="active"><a href="">注销<span class="sr-only">(current)</span></a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+{% endblock %}
+{% block content %}
+
+<div class="container margintop50 widthfixed">
+    <div id="dialog-form" title="添加学生">
+        <p class="validateTips">所有的表单字段都是必填的。</p>
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="sno">学号</label>
+                <input type="text" name="sno" id="sno" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="name">姓名</label>
+                <input type="text" name="name" id="name" value="" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="sex">性别</label>
+                <select id="sex" class="form-control">
+                    <option>男</option>
+                    <option>女</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="age">年龄</label>
+                <input type="text" name="age" id="age" value="" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="degree">学历</label>
+                <input type="text" name="degree" id="degree" value="" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="major">专业</label>
+                <input type="text" name="major" id="major" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="institute">学院</label>
+                <input type="text" name="institute" id="institute" value="" class="form-control">
+            </div>
+        </form>
+    </div>
+
+
+    <div>
+        <h1>已有的用户：</h1>
+        <table id="users" class="table table-striped">
+            <tr>
+                <td>学号</td>
+                <td>姓名</td>
+                <td>性别</td>
+                <td>年龄</td>
+                <td>学历</td>
+                <td>专业</td>
+                <td>学院</td>
+            </tr>
+            {% for stu in students %}
+            <tr>
+                <td>{{stu.uid}}</td>
+                <td>{{stu.name}}</td>
+                <td>{{stu.sex}}</td>
+                <td>{{stu.age}}</td>
+                <td>{{stu.degree}}</td>
+                <td>{{stu.major}}</td>
+                <td>{{stu.institute}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <button id="create-user">添加学生</button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

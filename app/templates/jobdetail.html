@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block page_content %}
+    <div class="container widthfixed">
+        <div class="job-info">
+            <div class="left">
+                <h3>{{position.company_name}}</h3>
+                <h4>{{position.name}}</h4>
+            </div>
+            <div class="right">
+                <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                    提交简历
+                </button>
+                <!-- Modal -->
+                <!-- 模态框（Modal） -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close"
+                                        data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    确认提交简历
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                请检查简历
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default"
+                                        data-dismiss="modal">取消
+                                </button>
+                                <button type="button" class="btn btn-primary">
+                                    提交
+                                </button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal -->
+                </div>
+            </div>
+            <div class="bottom">
+                <p>工作地点：{{position.city}}</p>
+            </div>
+        </div>
+        <div class="job-detail">
+            <h3>职位说明</h3>
+            <p>{{position.description}}</p>
+            <h3>职位要求</h3>
+            <ul class="list-group">
+                {% for re in rl %}
+                    <li class="list-group-item">{{re}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
