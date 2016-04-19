@@ -1,18 +1,25 @@
 {% extends "base.html" %}
 {% block page_content %}
-    <script>
-         document.getElementById('nav3').setAttribute('class', 'active');
-    </script>
+
+
     <div class="container widthfixed">
         <div class="first_floor">
-            <div class="left">
+            <div class="left" id="photo" onclick="document.location='/upload'">
             </div>
             <div class="right">
                 <h2>{{baseinfo.name}}</h2>
                 <span>{{baseinfo.major}}   </span><span>{{baseinfo.school}}</span>
                 <p>{{baseinfo.degree}}</p>
-                <p>{{baseinfo.mail}}</p>
-                <p>{{baseinfo.tel}}</p>
+                {% if baseinfo.mail %}
+                    <p>{{baseinfo.mail}}</p>
+                {% else %}
+                    <p><a>添加邮箱</a></p>
+                {% endif %}
+                {% if baseinfo.tel %}
+                    <p>{{baseinfo.tel}}</p>
+                {% else %}
+                    <p><a>添加电话</a></p>
+                {% endif %}
             </div>
             <div class="clearfix">
             </div>
@@ -65,4 +72,14 @@
             </ul>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+    {% if True %}
+        <script>
+            document.getElementById('nav3').setAttribute('class', 'active');
+            $('#photo').css("background-image","url({{baseinfo.photo}})");
+        </script>
+    {% endif %}
 {% endblock %}

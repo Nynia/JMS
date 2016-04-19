@@ -60,6 +60,7 @@ class Student(db.Model):
     school = db.Column(db.String(50))
     major = db.Column(db.String(50))
     institute = db.Column(db.String(50))
+    photo = db.Column(db.String(200))
     expedu1 = db.Column(db.Integer)
     expedu2 = db.Column(db.Integer)
     expedu3 = db.Column(db.Integer)
@@ -73,7 +74,7 @@ class Student(db.Model):
     expaward4 = db.Column(db.Integer)
 
     def __init__(self, uid, name, sex, age, degree, nation, tel, mail, school, major,
-                 institute, expedu1, expedu2, expedu3, expwork1, expwork2, expwork3, expwork4,
+                 institute, phote, expedu1, expedu2, expedu3, expwork1, expwork2, expwork3, expwork4,
                  expaward1, expaward2, expaward3, expaward4):
         self.uid = uid
         self.name = name
@@ -86,6 +87,7 @@ class Student(db.Model):
         self.school = school
         self.major = major
         self.institute = institute
+        self.photo = phote
         self.expedu1 = expedu1
         self.expedu2 = expedu2
         self.expedu3 = expedu3
