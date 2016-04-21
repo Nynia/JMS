@@ -2,28 +2,10 @@
 import os,time
 from app import app, db
 from flask import render_template, redirect, url_for, session, abort
-from models import User, Positon, ExpAward, ExpEdu, ExpWork, Student, Company
+from models import User, Positon, ExpAward, ExpEdu, ExpWork, Student, Company, StuPosition
 from forms import LoginForm
 from flask import request
 from qiniu import Auth, put_file, etag
-
-
-class loginSession (object):
-    id = 0
-    name = ''
-    type = 0
-    status = 'out'
-
-    @classmethod
-    def login(self, id, name, type):
-        loginSession.id = id
-        loginSession.name = name
-        loginSession.type = type
-        loginSession.status = 'in'
-
-    def logout(self):
-        loginSession.status = 'out'
-
 
 @app.errorhandler (404)
 def page_not_found(error):
@@ -51,10 +33,16 @@ def adminCM():
 
 @app.route ('/postpt')
 def postpt():
-    company = Company.query.filter_by ()
+    if not session.has_key ('username'):
+        return redirect (url_for ('login'))
+    company = Company.query.filter_by (id=session['username']).first ()
+    if company == None:
+        abort (404)
+    positions = Positon.query.filter_by(company_name=company.name).all()
+    return render_template('postpt.html',company=company,positions=positions)
 
 
-@app.route ('/index', methods=['POSt', 'GEt'])
+@app.route ('/index', methods=['POSt', 'GET'])
 def index():
     users = User.query.all ()
     username = request.form['username']
@@ -120,17 +108,23 @@ def jobtrends():
 
 @app.route ('/mydelivery')
 def mydelivery():
-    return render_template ("mydelivery.html")
+    uid = session['username']
+    relations = StuPosition.query.filter_by(uid=uid).all()
+    positions = []
+    for r in relations:
+        p = Positon.query.get(r.pid)
+        positions.append(p)
+    return render_template ("mydelivery.html", positions=positions)
 
 
 @app.route ('/jobdetail/<id>')
 def jobdetail(id):
-    position = Positon.query.get (id)
+    position = Positon.query.get(id)
     if position:
         re = position.requirements
-        return render_template ("jobdetail.html", position=position, rl=re.split (';'))
+        return render_template ("jobdetail.html", position=position, rl=re.split (';'),uid=session['username'])
     else:
-        return redirect (url_for ('404'))
+        abort(404)
 
 
 @app.route ('/addStu')
@@ -143,7 +137,9 @@ def addStu():
     degree = request.args.get ('degree')
     major = request.args.get ('major')
     institute = request.args.get ('institute')
-    stu = Student (sno, name, sex, age, degree, None, None, None, '南京林业大学', major, institute, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    mail = request.args.get('mail')
+    tel = request.args.get('tel')
+    stu = Student (sno, name, sex, age, degree, None, tel, mail, '南京林业大学', major, '',institute, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                    0, 0)
     user = User (sno, '123456', 1)
     db.session.add (stu)
@@ -164,9 +160,29 @@ def addCom():
     mail = request.args.get ('mail')
     com = Company (name, industry, scale, info, addr, tel, mail, 0, 0, 0)
     db.session.add (com)
-    db.session.commit ()
+    db.session.commit()
+    user = Company.query.filter_by(name=name).first ()
+    user = User(user.id, '123456', 2)
+    db.session.add(user)
+    db.session.commit()
     return str (com.id)
 
+@app.route('/addPosition')
+def addPosition():
+    print request.args
+    cname = request.args.get('cname')
+    name = request.args.get('name')
+    salary = request.args.get('salary')
+    num = request.args.get('num')
+    edu = request.args.get('degree')
+    city = request.args.get('city')
+    description = request.args.get('info')
+    requirements = request.args.get('req')
+    create_date = time.strftime('%Y-%m-%d')
+    position = Positon(cname,name,salary,num,edu,'',city,description,requirements,0,create_date)
+    db.session.add(position)
+    db.session.commit()
+    return cname
 
 @app.route ('/upload', methods=['GET', 'POST'])
 def upload_file():
@@ -241,3 +257,29 @@ def upload_file():
     <input type="submit" value="Upload" />
     </form>
     '''
+@app.route('/jobdetail/delivery')
+def delivery():
+    print request.args
+    uid = request.args.get('uid')
+    pid = request.args.get('pid')
+    ddate = time.strftime("%Y-%m-%d")
+
+    item = StuPosition(uid,pid,ddate)
+    db.session.add(item)
+    db.session.commit()
+
+    position = Positon.query.get(pid)
+    position.deliveried += 1
+    db.session.add(position)
+    db.session.commit()
+    return uid
+
+@app.route('/deliveried/<pid>')
+def deliveried(pid):
+    sids = StuPosition.query.filter_by(pid=pid).all()
+    students = []
+    print len(sids)
+    for id in sids:
+        students.append(Student.query.filter_by(uid=id.uid).first())
+        print students
+    return render_template('deliveried.html', students=students)

@@ -1,0 +1,67 @@
+{% extends "bootstrap/base.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="../static/css/jquery-ui.min.css">
+<link rel="stylesheet" type="text/css" href="../static/css/style.css">
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/js/jquery.min.js"></script>
+<script src="../static/js/jquery-ui.min.js"></script>
+{% if True %}
+<script>
+</script>
+{% endif %}
+{% endblock %}
+
+{% block title %}student{% endblock %}
+{% block navbar %}
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container widthfixed">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">毕业生就业管理系统</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="3">Admin</a></li>
+                <li class="active"><a href="">注销<span class="sr-only">(current)</span></a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+{% endblock %}
+{% block content %}
+
+<div class="container margintop50 widthfixed">
+    <div>
+        <table id="users" class="table table-striped">
+            <tr>
+                <td>学号</td>
+                <td>姓名</td>
+                <td>性别</td>
+                <td>年龄</td>
+                <td>专业</td>
+                <td>电话</td>
+            </tr>
+            {% for item in students %}
+            <tr>
+                <td>{{item.uid}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.sex}}</td>
+                <td>{{item.age}}</td>
+                <td>{{item.major}}</td>
+                <td>{{item.tel}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

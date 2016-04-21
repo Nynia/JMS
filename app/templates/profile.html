@@ -5,21 +5,16 @@
     <div class="container widthfixed">
         <div class="first_floor">
             <div class="left" id="photo" onclick="document.location='/upload'">
+                {% if baseinfo.photo == '' %}
+                <a>点击添加头像</a>
+                {% endif %}
             </div>
             <div class="right">
                 <h2>{{baseinfo.name}}</h2>
                 <span>{{baseinfo.major}}   </span><span>{{baseinfo.school}}</span>
                 <p>{{baseinfo.degree}}</p>
-                {% if baseinfo.mail %}
-                    <p>{{baseinfo.mail}}</p>
-                {% else %}
-                    <p><a>添加邮箱</a></p>
-                {% endif %}
-                {% if baseinfo.tel %}
-                    <p>{{baseinfo.tel}}</p>
-                {% else %}
-                    <p><a>添加电话</a></p>
-                {% endif %}
+                <p>{{baseinfo.mail}}</p>
+                <p>{{baseinfo.tel}}</p>
             </div>
             <div class="clearfix">
             </div>
@@ -79,7 +74,17 @@
     {% if True %}
         <script>
             document.getElementById('nav3').setAttribute('class', 'active');
+            function btn_mail() {
+                var text = $('#mail_text').val();
+                alert(text);
+            }
             $('#photo').css("background-image","url({{baseinfo.photo}})");
+            $("#mail").click(function(){
+                $(this).html("<form>" +
+                        "<input type='text' name='mail_text'>" +
+                        "<input type='submit' value='确认'>" +
+                        "</form>")
+            });
         </script>
     {% endif %}
 {% endblock %}

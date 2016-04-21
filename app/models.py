@@ -30,9 +30,10 @@ class Positon(db.Model):
     description = db.Column(db.Text)
     requirements = db.Column(db.Text)
     create_date = db.Column(db.Date)
+    deliveried = db.Column(db.Integer)
 
     def __init__(self, company_name, name, salary, num, edu, tel,
-                 city, description, requirements, create_date):
+                 city, description, requirements, deliveried, create_date):
         self.company_name = company_name
         self.name = name
         self.salary = salary
@@ -43,6 +44,8 @@ class Positon(db.Model):
         self.description = description
         self.requirements = requirements
         self.create_date = create_date
+        self.deliveried = deliveried
+
     def __repr__(self):
         return '<company %r>' % self.company_name
 
@@ -73,8 +76,8 @@ class Student(db.Model):
     expaward3 = db.Column(db.Integer)
     expaward4 = db.Column(db.Integer)
 
-    def __init__(self, uid, name, sex, age, degree, nation, tel, mail, school, major,
-                 institute, phote, expedu1, expedu2, expedu3, expwork1, expwork2, expwork3, expwork4,
+    def __init__(self, uid, name, sex, age, degree, nation, tel, mail, school, major, photo,
+                 institute, expedu1, expedu2, expedu3, expwork1, expwork2, expwork3, expwork4,
                  expaward1, expaward2, expaward3, expaward4):
         self.uid = uid
         self.name = name
@@ -87,7 +90,7 @@ class Student(db.Model):
         self.school = school
         self.major = major
         self.institute = institute
-        self.photo = phote
+        self.photo = photo
         self.expedu1 = expedu1
         self.expedu2 = expedu2
         self.expedu3 = expedu3
@@ -175,3 +178,15 @@ class Company(db.Model):
         self.position1 = p1
         self.position2 = p2
         self.position3 = p3
+
+class StuPosition(db.Model):
+    __tablename__ = "stuposition"
+    id = db.Column(db.Integer, primary_key=True)
+    uid = db.Column(db.Integer)
+    pid = db.Column(db.Integer)
+    ddate = db.Column(db.Date)
+
+    def __init__(self, uid, pid, ddate):
+        self.uid = uid
+        self.pid = pid
+        self.ddate = ddate

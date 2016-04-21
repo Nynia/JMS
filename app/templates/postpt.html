@@ -6,17 +6,17 @@
 <script src="../static/js/bootstrap.min.js"></script>
 <script src="../static/js/jquery.min.js"></script>
 <script src="../static/js/jquery-ui.min.js"></script>
+{% if True %}
 <script>
     $(function () {
         var name = $("#name"),
-                sno = $("#sno"),
-                age = $("#age"),
-                sex = $('#sex'),
-                major = $('#major'),
+                addr = $("#addr"),
+                num = $("#num"),
+                salary = $('#salary'),
                 degree = $('#degree'),
-                institute = $('#institute'),
-                tel = $('#tel'),
-                mail = $('#mail'),
+                req = $('#req'),
+                info = $('#info'),
+                cname = '{{company.name}}',
                 tips = $(".validateTips");
 
         function updateTips(t) {
@@ -60,33 +60,25 @@
                     //allFields.removeClass("ui-state-error");
                     if (bValid) {
                         $("#users").append("<tr>" +
-                                "<td>" + sno.val() + "</td>" +
                                 "<td>" + name.val() + "</td>" +
-                                "<td>" + sex.val() + "</td>" +
-                                "<td>" + age.val() + "</td>" +
-                                "<td>" + degree.val() + "</td>" +
-                                "<td>" + major.val() + "</td>" +
-                                "<td>" + institute.val() + "</td>" +
+                                "<td>" + addr.val() + "</td>" +
+                                "<td>" + num.val() + "</td>" +
+                                "<td>" + 0 + "</td>" +
                                 "</tr>");
+                        var data = {
+                                cname:cname,name:name.val(),city:addr.val(),num:num.val(),salary:salary.val(),
+                                degree:degree.val(),info:info.val(),req:req.val()
+                            };
                         $.ajax({
                             type: "GET",
-                            url: "addStu",
-                            data: {
-                                sno: sno.val(), name: name.val(), sex: sex.val(), age: age.val(),
-                                major: major.val(), degree: degree.val(), institute: institute.val(),
-                                tel:tel.val(), mail:mail.val()
-                            },
+                            url: "addPosition",
+                            data: data,
                             success: function (msg) {
                                 alert("success");
                             }
                         });
                         $(this).dialog("close");
-                        $('#sno').val("");
                         $('#name').val("");
-                        $('#age').val("");
-                        $('#major').val("");
-                        $('#degree').val("");
-                        $('#institute').val("");
                     }
                 },
                 Cancel: function () {
@@ -105,6 +97,7 @@
                 });
     });
 </script>
+{% endif %}
 {% endblock %}
 
 {% block title %}student{% endblock %}
@@ -122,10 +115,6 @@
             <a class="navbar-brand" href="#">毕业生就业管理系统</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li id="nav1"><a href="adminSM">学生管理</a></li>
-                <li id="nav2"><a href="adminCM">企业管理</a></li>
-            </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="3">Admin</a></li>
                 <li class="active"><a href="">注销<span class="sr-only">(current)</span></a></li>
@@ -137,78 +126,62 @@
 {% block content %}
 
 <div class="container margintop50 widthfixed">
-    <div id="dialog-form" title="添加学生">
+    <div id="dialog-form" title="添加职位">
         <p class="validateTips">所有的表单字段都是必填的。</p>
         <form class="form-horizontal">
             <div class="form-group">
-                <label for="sno">学号</label>
-                <input type="text" name="sno" id="sno" class="form-control">
-            </div>
-            <div class="form-group">
-                <label for="name">姓名</label>
+                <label for="name">职位名称</label>
                 <input type="text" name="name" id="name" value="" class="form-control">
             </div>
             <div class="form-group">
-                <label for="sex">性别</label>
-                <select id="sex" class="form-control">
-                    <option>男</option>
-                    <option>女</option>
-                </select>
+                <label for="addr">工作地点</label>
+                <input type="text" name="addr" id="addr" value="" class="form-control">
             </div>
             <div class="form-group">
-                <label for="age">年龄</label>
-                <input type="text" name="age" id="age" value="" class="form-control">
+                <label for="num">招聘人数</label>
+                <input type="text" name="num" id="num" value="" class="form-control">
             </div>
             <div class="form-group">
                 <label for="degree">学历</label>
-                <input type="text" name="degree" id="degree" value="" class="form-control">
+                <input type="text" name="degree" id="degree" class="form-control">
             </div>
             <div class="form-group">
-                <label for="major">专业</label>
-                <input type="text" name="major" id="major" class="form-control">
+                <label for="salary">薪水</label>
+                <input type="text" name="salary" id="salary" class="form-control">
             </div>
             <div class="form-group">
-                <label for="institute">学院</label>
-                <input type="text" name="institute" id="institute" value="" class="form-control">
+                <label for="info">职位描述</label>
+                <textarea id="info" rows="3" placeholder="简介" class="form-control"></textarea>
             </div>
-            <div class="form-group">
-                <label for="tel">电话</label>
-                <input type="text" name="tel" id="tel" value="" class="form-control">
-            </div>
-            <div class="form-group">
-                <label for="mail">邮箱</label>
-                <input type="text" name="mail" id="mail" value="" class="form-control">
+             <div class="form-group">
+                <label for="req">职位要求</label>
+                <textarea id="req" rows="3" placeholder="用分号隔开" class="form-control"></textarea>
             </div>
         </form>
     </div>
 
 
     <div>
-        <h1>已有的用户：</h1>
         <table id="users" class="table table-striped">
             <tr>
-                <td>学号</td>
-                <td>姓名</td>
-                <td>性别</td>
-                <td>年龄</td>
-                <td>学历</td>
-                <td>专业</td>
-                <td>学院</td>
+                <td>职位名称</td>
+                <td>工作地点</td>
+                <td>招聘人数</td>
+                <td>投递人数</td>
+                <td>功能</td>
             </tr>
-            {% for stu in students %}
+            {% for p in positions %}
             <tr>
-                <td>{{stu.uid}}</td>
-                <td>{{stu.name}}</td>
-                <td>{{stu.sex}}</td>
-                <td>{{stu.age}}</td>
-                <td>{{stu.degree}}</td>
-                <td>{{stu.major}}</td>
-                <td>{{stu.institute}}</td>
+                <td>{{p.name}}</td>
+                <td>{{p.city}}</td>
+                <td>{{p.num}}</td>
+                <td>{{p.deliveried}}</td>
+                <td><a id="view" href="deliveried/{{p.id}}">查看</a></td>
             </tr>
             {% endfor %}
         </table>
     </div>
-    <button id="create-user">添加学生</button>
+    <button id="create-user">添加职位</button>
 </div>
 {% endblock %}
 

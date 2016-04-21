@@ -4,6 +4,12 @@
          document.getElementById('nav2').setAttribute('class', 'active');
     </script>
     <div class="container widthfixed">
-
+        <div class="list-group">
+            {% for p in positions %}
+                <li class="list-group-item">
+                    <a href="jobdetail/{{p.id}}">{{p.company_name}}-{{p.name}}</a>
+                </li>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
